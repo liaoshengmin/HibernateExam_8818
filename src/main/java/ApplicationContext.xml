@@ -65,18 +65,20 @@
 			</list> </property> -->
 
 
-		<!-- <property name="mappingDirectoryLocations"> -->
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:com/model/*.hbm.xml</value>
+			</list>
+		</property>
+
+
+		<!-- 自动扫描注解方式配置的hibernate类文件 -->
+		<!-- <property name="packagesToScan"> -->
 		<!-- <list> -->
-		<!-- <value>classpath:com/model/</value> -->
+		<!-- <value>com.model</value> -->
 		<!-- </list> -->
 		<!-- </property> -->
 
-		<!-- 自动扫描注解方式配置的hibernate类文件 -->
-		<property name="packagesToScan">
-			<list>
-				<value>com.model</value>
-			</list>
-		</property>
 
 	</bean>
 

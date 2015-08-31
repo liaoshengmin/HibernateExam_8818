@@ -13,7 +13,9 @@ import org.hibernate.service.ServiceRegistryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.model.Address;
 import com.model.Customer;
+import com.model.Store;
 
 @Repository("jdbcService")
 public class JDBCService {
@@ -27,6 +29,41 @@ public class JDBCService {
 	}
 
 
+	public Address address(Short add_id){
+		Session session = sessionFactory.withOptions().interceptor(new MyInterceptor()).openSession();
+		Transaction tx = null;
+		Address add = null;
+		try{
+			tx = session.beginTransaction();
+			add = (Address)session.get(Address.class, add_id);
+			tx.commit();
+		}catch (HibernateException e) {
+			if (tx!=null) tx.rollback();
+			e.printStackTrace(); 
+		}finally {
+			session.close(); 
+		}
+		return add;
+	}
+
+	public Store store(){
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		Store st = null;
+		try{
+			tx = session.beginTransaction();
+			st = (Store)session.get(Store.class,(short)1);
+			tx.commit();
+		}catch (HibernateException e) {
+			if (tx!=null) tx.rollback();
+			e.printStackTrace(); 
+		}finally {
+			session.close(); 
+		}
+		return st;
+	}
+
+
 	public Short save(Customer cus){
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
@@ -34,8 +71,7 @@ public class JDBCService {
 		try{
 			tx = session.beginTransaction();
 			cus_id = (Short)session.save(cus);
-			cus_id = cus.getCustomer_id();
-//			System.out.println(cus_id);
+			//			System.out.println(cus_id);
 			tx.commit();
 		}catch (HibernateException e) {
 			if (tx!=null) tx.rollback();
@@ -49,46 +85,46 @@ public class JDBCService {
 	public void findone(Customer cus){
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
-		System.out.println("ID:"+cus.getCustomer_id());
-		System.out.println("FirstName:" + cus.getFirst_name()); 
-		System.out.println("LastName:" + cus.getLast_name()); 
+		System.out.println("ID:"+cus.getCustomerId());
+		System.out.println("FirstName:" + cus.getFirstName()); 
+		System.out.println("LastName:" + cus.getLastName()); 
 		System.out.println("Email:" + cus.getEmail()); 
-		//        System.out.println("Address:"+customer.getAddress());
-		System.out.println("Create_date:"+cus.getCreate_date());
-//		try{
-//			tx = session.beginTransaction();
-//			List cus1 = session.createQuery("FROM Customer where customer_id=22").list(); 
-//			for (Iterator iterator = 
-//					cus1.iterator(); iterator.hasNext();){
-//				Customer customer = (Customer) iterator.next(); 
-//
-//			}
-//			tx.commit();
-//		}catch (HibernateException e) {
-//			if (tx!=null) tx.rollback();
-//			e.printStackTrace(); 
-//		}finally {
-//			session.close(); 
-//		}
+		System.out.println("Address:"+cus.getAddress().getAddress());
+		System.out.println("Create_date:"+cus.getCreateDate());
+		//		try{
+		//			tx = session.beginTransaction();
+		//			List cus1 = session.createQuery("FROM Customer where customer_id=22").list(); 
+		//			for (Iterator iterator = 
+		//					cus1.iterator(); iterator.hasNext();){
+		//				Customer customer = (Customer) iterator.next(); 
+		//
+		//			}
+		//			tx.commit();
+		//		}catch (HibernateException e) {
+		//			if (tx!=null) tx.rollback();
+		//			e.printStackTrace(); 
+		//		}finally {
+		//			session.close(); 
+		//		}
 	}
-	
-	
+
+
 	public void delete(short cusid){
 		Session session = sessionFactory.openSession();
-	      Transaction tx = null;
-	      try{
-	         tx = session.beginTransaction();
-	         Customer cus = (Customer)session.get(Customer.class, cusid); 
-	         session.delete(cus); 
-	         tx.commit();
-	      }catch (HibernateException e) {
-	         if (tx!=null) tx.rollback();
-	         e.printStackTrace(); 
-	      }finally {
-	         session.close(); 
-	      }
+		Transaction tx = null; 
+		try{
+			tx = session.beginTransaction();
+			Customer cus = (Customer)session.get(Customer.class, cusid);
+			session.delete(cus); 
+			tx.commit();
+		}catch (HibernateException e) {
+			if (tx!=null) tx.rollback();
+			e.printStackTrace(); 
+		}finally {
+			session.close(); 
+		}
 	}
-	
+
 
 
 }

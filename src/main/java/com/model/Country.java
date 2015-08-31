@@ -1,53 +1,69 @@
 package com.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
-@Entity
-@Table(name = "country", schema = "sakila")
-public class Country {
-	private int country_id;
+public class Country implements java.io.Serializable {
+
+	// Fields
+
+	private Short countryId;
 	private String country;
-	private String last_update;
-	
-	public Country(){}
-	
-	public Country(int country_id,String country,String last_update){
-		this.country_id=country_id;
-		this.country=country;
-		this.last_update=last_update;
+	private Timestamp lastUpdate;
+	private Set cities = new HashSet(0);
+
+	// Constructors
+
+	/** default constructor */
+	public Country() {
 	}
 
-	@Id
-    @Column(name = "customer_id")
-	public int getCountry_id() {
-		return country_id;
+	/** minimal constructor */
+	public Country(String country, Timestamp lastUpdate) {
+		this.country = country;
+		this.lastUpdate = lastUpdate;
 	}
 
-	public void setCountry_id(int country_id) {
-		this.country_id = country_id;
+	/** full constructor */
+	public Country(String country, Timestamp lastUpdate, Set cities) {
+		this.country = country;
+		this.lastUpdate = lastUpdate;
+		this.cities = cities;
 	}
 
-	@Column(name = "country")
+	// Property accessors
+
+	public Short getCountryId() {
+		return this.countryId;
+	}
+
+	public void setCountryId(Short countryId) {
+		this.countryId = countryId;
+	}
+
 	public String getCountry() {
-		return country;
+		return this.country;
 	}
 
 	public void setCountry(String country) {
 		this.country = country;
 	}
 
-	@Column(name = "last_update")
-	public String getLast_update() {
-		return last_update;
+	public Timestamp getLastUpdate() {
+		return this.lastUpdate;
 	}
 
-	public void setLast_update(String last_update) {
-		this.last_update = last_update;
+	public void setLastUpdate(Timestamp lastUpdate) {
+		this.lastUpdate = lastUpdate;
 	}
-	
-	
+
+	public Set getCities() {
+		return this.cities;
+	}
+
+	public void setCities(Set cities) {
+		this.cities = cities;
+	}
 
 }

@@ -1,65 +1,82 @@
 package com.model;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "city", schema = "sakila")
-public class City {
-	private int city_id;
+public class City implements java.io.Serializable {
+
+	// Fields
+
+	private Short cityId;
+	private Country country;
 	private String city;
-	private int country_id;
-	private Timestamp last_update;
-	
-	public City() {}
-	
-	public City(int city_id,String city,int country_id,Timestamp last_update){
-		this.city_id=city_id;
-		this.city=city;
-		this.country_id=country_id;
-		this.last_update=last_update;
+	private Timestamp lastUpdate;
+	private Set addresses = new HashSet(0);
+
+	// Constructors
+
+	/** default constructor */
+	public City() {
 	}
-	
-	@Id
-    @Column(name = "city_id")
-	public int getCity_id() {
-		return city_id;
+
+	/** minimal constructor */
+	public City(Country country, String city, Timestamp lastUpdate) {
+		this.country = country;
+		this.city = city;
+		this.lastUpdate = lastUpdate;
 	}
-	public void setCity_id(int city_id) {
-		this.city_id = city_id;
+
+	/** full constructor */
+	public City(Country country, String city, Timestamp lastUpdate,
+			Set addresses) {
+		this.country = country;
+		this.city = city;
+		this.lastUpdate = lastUpdate;
+		this.addresses = addresses;
 	}
-	
-	@Column(name = "city")
+
+	// Property accessors
+
+	public Short getCityId() {
+		return this.cityId;
+	}
+
+	public void setCityId(Short cityId) {
+		this.cityId = cityId;
+	}
+
+	public Country getCountry() {
+		return this.country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
 	public String getCity() {
-		return city;
+		return this.city;
 	}
+
 	public void setCity(String city) {
 		this.city = city;
 	}
-	
-	@Column(name = "country_id")
-	public int getCountry_id() {
-		return country_id;
-	}
-	public void setCountry_id(int country_id) {
-		this.country_id = country_id;
+
+	public Timestamp getLastUpdate() {
+		return this.lastUpdate;
 	}
 
-	@Column(name = "last_update")
-	public Timestamp getLast_update() {
-		return last_update;
+	public void setLastUpdate(Timestamp lastUpdate) {
+		this.lastUpdate = lastUpdate;
 	}
 
-	public void setLast_update(Timestamp last_update) {
-		this.last_update = last_update;
+	public Set getAddresses() {
+		return this.addresses;
 	}
 
-	
-	
-	
+	public void setAddresses(Set addresses) {
+		this.addresses = addresses;
+	}
 
 }

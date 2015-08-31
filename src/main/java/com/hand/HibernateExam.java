@@ -1,5 +1,6 @@
 package com.hand;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import com.model.Address;
 import com.model.Customer;
 
 public class HibernateExam {
@@ -26,10 +28,10 @@ public class HibernateExam {
 //		JDBCService js = new JDBCService();
 		System.out.println( "请输入FirstName(first_name):" );
 		Scanner scaner1 = new Scanner(System.in);
-		cus.setFirst_name(scaner1.next());
+		cus.setFirstName(scaner1.next());
 		System.out.println( "请输入LastName(last_name):" );
 		Scanner scaner2 = new Scanner(System.in);
-		cus.setLast_name(scaner2.next());
+		cus.setLastName(scaner2.next());
 		System.out.println( "请输入Email(email):" );
 		Scanner scaner3 = new Scanner(System.in);
 		cus.setEmail(scaner3.next());
@@ -37,7 +39,7 @@ public class HibernateExam {
 		Scanner scaner4 = new Scanner(System.in);
 		String addressID = scaner4.next();
 		Scanner scaner5;
-		Integer addID = Integer.parseInt(addressID);
+		Short addID = Short.parseShort(addressID);
 		boolean a = false;
 		if(addID<1||addID>605){
 			a=true;
@@ -47,19 +49,20 @@ public class HibernateExam {
 			scaner5 = new Scanner(System.in);
 			addressID = scaner5.next();
 			a = false;
-			addID = Integer.parseInt(addressID);
+			addID = Short.parseShort(addressID);
 			if(addID<1||addID>605){
 				a=true;
 			}
 		}
-		
-		cus.setAddress_id(addID);
-		cus.setStore_id(1);
-		cus.setCreate_date(new Date());
+		Address adds = jdbcService.address(addID);
+		cus.setAddress(adds);
+		cus.setStore(jdbcService.store());
+		cus.setCreateDate(new Timestamp(new Date().getTime()));
+		cus.setActive(true);
 		
 //		System.out.println(cus.getAddress_id()+cus.getLast_name());
 		Short cus_id = jdbcService.save(cus);
-		System.out.println("Before	Save");
+//		System.out.println("Before	Save");
 		jdbcService.findone(cus);
 
 		System.out.println("请输入要删除的Customer的ID:");
