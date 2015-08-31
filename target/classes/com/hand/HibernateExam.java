@@ -59,7 +59,7 @@ public class HibernateExam {
 		
 //		System.out.println(cus.getAddress_id()+cus.getLast_name());
 		Short cus_id = jdbcService.save(cus);
-		
+		System.out.println("Before	Save");
 		jdbcService.findone(cus);
 
 		System.out.println("请输入要删除的Customer的ID:");
